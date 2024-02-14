@@ -1,0 +1,208 @@
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local Window = OrionLib:MakeWindow({Name = "Bot Hub", HidePremium = false, SaveConfig = true, ConfigFolder = "BotPerm",IntroText = "Bot Hub"})
+wait(3)
+local Tab = Window:MakeTab({
+	Name = "Default",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+Tab:AddLabel("Creator script By:Bot9999")
+local playerName = game.Players.LocalPlayer.Name
+
+Tab:AddLabel("Player's name: " .. playerName)
+
+Tab:AddLabel("User library: OrionLib")
+local playerName = game.Players.LocalPlayer.Name
+
+Tab:AddParagraph("Message to:" .. playerName,"Thanks for using our scripts! Our team works hard to create tools and features that make your gaming experience more fun and exciting. Knowing that you are taking advantage of our")
+
+local Tab = Window:MakeTab({
+	Name = "Main",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+	Name = "Powers Op!"
+})
+
+local Players = game:GetService("Players")
+
+local function setWalkSpeed(speed)
+    local character = Players.LocalPlayer.Character
+    if character and character:FindFirstChild("Humanoid") then
+        character.Humanoid.WalkSpeed = speed
+    end
+end
+
+Tab:AddTextbox({
+    Name = "Set Speed",
+    Default = "16",
+    TextDisappear = true,
+    Callback = function(value)
+        local speed = tonumber(value)
+        if speed then
+            setWalkSpeed(speed)
+        else
+            setWalkSpeed(16)
+        end
+    end
+})
+
+local Players = game:GetService("Players")
+
+local function setJumpPower(power)
+    local character = Players.LocalPlayer.Character
+    if character and character:FindFirstChild("Humanoid") then
+        character.Humanoid.JumpPower = power
+    end
+end
+
+Tab:AddTextbox({
+    Name = "Set Jump",
+    Default = "50",
+    TextDisappear = true,
+    Callback = function(value)
+        local power = tonumber(value)
+        if power then
+            setJumpPower(power)
+        else
+            setJumpPower(50)
+        end
+    end
+})
+
+local Workspace = game:GetService("Workspace")
+
+local function setGravity(gravity)
+    Workspace.Gravity = gravity
+end
+
+Tab:AddTextbox({
+    Name = "Set Gravity",
+    Default = "196.2",
+    TextDisappear = true,
+    Callback = function(value)
+        local gravity = tonumber(value)
+        if gravity then
+            setGravity(gravity)
+        else
+            setGravity(196.2)
+        end
+    end
+})
+
+local Players = game:GetService("Players")
+local HealEnabled = false
+
+local function instantHeal()
+    local character = Players.LocalPlayer.Character
+    if character and character:FindFirstChild("Humanoid") then
+        character.Humanoid.Health = character.Humanoid.MaxHealth
+    end
+end
+
+local function startHealing()
+    while HealEnabled do
+        instantHeal()
+        wait(0.1)
+    end
+end
+
+Tab:AddToggle({
+    Name = "Instant Heal",
+    Default = false,
+    Callback = function(enabled)
+        HealEnabled = enabled
+        if enabled then
+            coroutine.wrap(startHealing)()
+        end
+    end
+})
+
+  
+ local Tab = Window:MakeTab({
+	Name = "GameTeleport",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local TeleportService = game:GetService("TeleportService")
+local Players = game:GetService("Players")
+
+local function teleportPlayer(gameId)
+    if gameId then
+        TeleportService:Teleport(gameId)
+    end
+end
+
+
+Tab:AddTextbox({
+    Name = "Game Id for Roblox Teleport!",
+    Default = "Game ID",
+    TextDisappear = true,
+    Callback = function(gameId)
+        teleportPlayer(tonumber(gameId))
+    end
+})
+
+Tab:AddButton({
+	Name = "Teleport to the highest place!",
+	Callback = function()
+	   local Players = game:GetService("Players")
+
+local function findHighestPoint()
+    local highestPoint = Vector3.new(0, 0, 0)
+    for _, part in ipairs(game.Workspace:GetDescendants()) do
+        if part:IsA("BasePart") and part.Position.Y > highestPoint.Y then
+            highestPoint = part.Position
+        end
+    end
+    return highestPoint
+end
+
+local function teleportToHighestPoint()
+    local highestPoint = findHighestPoint()
+    local player = Players.LocalPlayer
+    if highestPoint and player then
+        local humanoidRootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+        if humanoidRootPart then
+            humanoidRootPart.CFrame = CFrame.new(highestPoint) * CFrame.new(0, 5, 0)
+        end
+    end
+end
+
+teleportToHighestPoint()
+	  
+  	end    
+})
+
+  local Players = game:GetService("Players")
+local TeleportService = game:GetService("TeleportService")
+
+local function TeleportToRandomPlayer()
+    local players = Players:GetPlayers()
+    local randomPlayer = players[math.random(1, #players)]
+    local playerCharacter = randomPlayer.Character
+    if playerCharacter then
+        local humanoidRootPart = playerCharacter:FindFirstChild("HumanoidRootPart")
+        if humanoidRootPart then
+            TeleportService:TeleportToPlaceInstance(game.PlaceId, humanoidRootPart.CFrame)
+        end
+    end
+end
+
+Tab:AddButton({
+    Name = "Teleport Player",
+    Callback = function()
+        TeleportToRandomPlayer()
+    end
+})
+
+local Tab = Window:MakeTab({
+	Name = "Anti Afk",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
